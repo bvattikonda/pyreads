@@ -12,3 +12,6 @@ Questions, comments? bvattikonda@cs.ucsd.edu
 
 __author__ = 'Bhanu Vattikonda <bvattikonda@cs.ucsd.edu>'
 __version__ = '1.0.0'
+__license__ = 'MIT'
+
+import pyreads.auth

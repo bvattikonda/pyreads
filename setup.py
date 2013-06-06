@@ -2,12 +2,10 @@
 
 import os
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 
 __author__ = 'Bhanu Vattikonda <bvattikonda@cs.ucsd.edu>'
 __version__ = '1.0.0'
-
-packages = ['pyreads']
 
 setup(name = 'PyReads',
       version = __version__,
@@ -18,5 +16,5 @@ setup(name = 'PyReads',
       url = 'https://github.com/bvattikonda/pyreads',
       keywords = 'goodreads api pyreads',
       license = open('LICENSE').read(),
-      packages = packages,
+      packages = find_packages(),
      )
