@@ -3,26 +3,21 @@ import urlparse
 import urllib
 from error import PyReadsError
 
-class AuthHandler(object):
-    def apply_auth(self, url, method, headers, parameters):
-        raise NotImplementedError
-
-    def get_user(self):
-        raise NotImplementedError
-
-class OAuthHandler(AuthHandler):
+class OAuthHandler(object):
     OAUTH_HOST = 'www.goodreads.com'
     OAUTH_ROOT = '/oauth/'
-    def __init__(self, consumer_key, consumer_secret):
-        self._consumer = oauth.Consumer(consumer_key, consumer_secret)
+    def __init__(self, app_key, app_secret, 
+                 oauth_token = None, oauth_token_secret = None):
+        self.consumer = oauth.Consumer(app_key, app_secret)
         self.request_token = None
         self.access_token = None
-        self.user = None
+        if oauth_token and oauth_token_secret:
+            self.access_token = oauth.Token(oauth_token, oauth_token_secret)
 
     def _get_request_token(self):
         try:
             url = self._get_oauth_url('request_token')
-            client = oauth.Client(self._consumer)
+            client = oauth.Client(self.consumer)
             response, content = client.request(url)
             request_token = dict(urlparse.parse_qsl(content))
             return oauth.Token(request_token['oauth_token'],
@@ -60,7 +55,7 @@ class OAuthHandler(AuthHandler):
         try:
             url = self._get_oauth_url('access_token')
             self.request_token = request_token
-            client = oauth.Client(self._consumer, self.request_token)
+            client = oauth.Client(self.consumer, self.request_token)
             response, content = client.request(url, 'POST')
             access_token = dict(urlparse.parse_qsl(content))
             token = oauth.Token(access_token['oauth_token'], 
@@ -76,9 +71,9 @@ if __name__ == '__main__':
         This piece of code shows how to and helps generate the first access
         token which can then be used to work with goodreads API.
     """
-    CONSUMER_KEY = 'jTvdwlSsuOOgtmQUw5JoXQ'
-    CONSUMER_SECRET = 'AwIKsQWPsYeWQFI2c76r2c2K0i7tKj8aqQEC60IqUQ'
-    handler = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    APP_KEY = ''
+    APP_SECRET = ''
+    handler = OAuthHandler(APP_KEY, APP_SECRET)
     url = handler.get_authorization_url()
     print 'Visit and authorize'
     print url
@@ -87,6 +82,6 @@ if __name__ == '__main__':
         accepted = raw_input('Have you authorized? (y/n)')
         
     request_token = handler.request_token
-    handler = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    handler = OAuthHandler(APP_KEY, APP_SECRET)
     token = handler.get_access_token(request_token)
     print token
