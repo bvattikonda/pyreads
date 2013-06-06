@@ -2,7 +2,7 @@
 
 import os
 import sys
-from distutils.core import setup
+from setuptools import setup
 
 __author__ = 'Bhanu Vattikonda <bvattikonda@cs.ucsd.edu>'
 __version__ = '1.0.0'
@@ -15,6 +15,8 @@ setup(name = 'PyReads',
       description = 'Python interface to the GoodReads API',
       author = 'Bhanu Vattikonda',
       author_email = 'bvattikonda@cs.ucsd.edu',
-      url = 'http://cseweb.ucsd.edu/~bvattikonda/',
+      url = 'https://github.com/bvattikonda/pyreads',
+      keywords = 'goodreads api pyreads',
+      license = open('LICENSE').read(),
       packages = packages,
      )
